@@ -8,7 +8,7 @@ var nextPermutation = function(nums) {
         var tmp = arr[a];
         arr[a] = arr[b];
         arr[b] = tmp;
-    }
+    };
     var reverse = function (index) {
         var i = index + 1;
         var j = nums.length - 1;
