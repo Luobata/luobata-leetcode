@@ -59,38 +59,42 @@ var find = function (str, arr) {
     for (i = 0; i < length; i++) {
         left = i;
         count = 0;
-        obj2 = JSON.parse(JSON.stringify(obj));
+        obj2 = {};
         for (let j = i; j + (arr.length - count - 1) * length < str.length; j += length) {
             s = str.substring(j, j + length);
             loop = true;
-            if (obj2[s]) {
-                obj2[s]--;
-                count++;
-                if (count === arr.length) {
-                    result.push(left);
-                    //obj2 = JSON.parse(JSON.stringify(obj));
-                    s = str.substring(left, left + length);
+            if (obj[s]) {
+                if (obj2[s]) {
                     obj2[s]++;
-                    count--;
-                    left += length;
-                    //console.log('left: ' + left);
-                    //console.log(obj2);
+                } else {
+                    obj2[s] = 1;
                 }
-            } else if (obj2[s] === 0) {
-                while (loop && count > 0) {
-                    s2 = str.substring(left, left + length);
-                    left += length;
-                    if (s === s2) {
-                        loop = false;
-                    } else {
-                        obj2[s2]++;
+                if (obj2[s] > obj[s]) {
+                    while (loop && count > 0) {
+                        s2 = str.substring(left, left + length);
+                        left += length;
+                        if (s === s2) {
+                            loop = false;
+                            obj2[s2]--;
+                        } else {
+                            obj2[s2]--;
+                            count--;
+                        }
+                    }
+                } else {
+                    count++;
+                    if (count === arr.length) {
+                        result.push(left);
+                        s = str.substring(left, left + length);
+                        obj2[s]--;
                         count--;
+                        left += length;
                     }
                 }
             } else {
                 count = 0;
                 left = j + length;
-                obj2 = JSON.parse(JSON.stringify(obj));
+                obj2 = {};
             }
         }
     }
